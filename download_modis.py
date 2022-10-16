@@ -11,10 +11,7 @@ session = ModisSession(username=username, password=password)
 # Query the MODIS catalog for collections
 collection_client = CollectionApi(session=session)
 
-
-#collections = collection_client.query(short_name="MOD09CMG", version="006")
-collections = collection_client.query(short_name="MODIS_A-JPL-L2P", version="2019.0")
-
+collections = collection_client.query(short_name="MOD09CMG", version="006")
 
 # Query the selected collection for granules
 granule_client = GranuleApi.from_collection(collections[0], session=session)
@@ -25,3 +22,4 @@ nigeria_granules = granule_client.query(start_date="2012-10-24", end_date="2012-
 
 # Download the granules
 GranuleHandler.download_from_granules(nigeria_granules, session)
+
