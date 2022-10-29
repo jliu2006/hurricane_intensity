@@ -76,8 +76,17 @@ def post_processing(folder, params):
 
     print (B.shape)
 
-    area = getTgtArea(rgb, -75.4, 40.3, 20)
-    #TODO: write to nparray file   
+    lat = str(params['lt'])
+    lon = str(params['lg'])
+    
+    lat = lat[:-1]
+    lon = lon[:-1]
+    
+    area = getTgtArea(rgb, float(lon), float(lat), 12.5)
+    
+    filename = folder + 'modis_satellite_' + str(params['date']) + '.npy'
+    
+    np.save(filename, area)
     
     print ("removing ", curr_file)
     os.remove(curr_file)
@@ -107,3 +116,4 @@ hurricanes_folders = glob("/home/fun/data/AL012012/", recursive = True)
 for it in hurricanes_folders:
     print (it)
     download_modis(it)
+    break
