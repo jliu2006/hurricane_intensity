@@ -54,7 +54,7 @@ def download_file(folder, start_date, end_date):
     
     
     
-def post_processing():
+def post_processing(folder, params):
     curr_file = glob("./*.hdf", recursive = True)[0]
     
     print ('found ', curr_file)
@@ -97,12 +97,12 @@ def download_modis(folder):
         
         download_file(folder, convert_date(str(it['date'])),  convert_date(str(it['date'])))
         
-        post_processing()
+        post_processing(folder, it)
         
 
 
 
-hurricanes_folders = glob("/home/fun/data/*012012/", recursive = True)
+hurricanes_folders = glob("/home/fun/data/AL012012/", recursive = True)
 
 for it in hurricanes_folders:
     print (it)
