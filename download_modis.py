@@ -6,8 +6,7 @@ import json
 import os
 from pyhdf.SD import SD, SDC
 import numpy as np
-
-
+import sys
 
 username = "lxg0601"  # Update this line
 password = "Xian2021"  # Update this line
@@ -50,12 +49,15 @@ def download_file(folder, start_date, end_date):
     nigeria_granules = granule_client.query(start_date=start_date, end_date=end_date, bounding_box=nigeria_bbox)
 
     # Download the granules
-    GranuleHandler.download_from_granules(nigeria_granules, session)
+    GranuleHandler.download_from_granules(nigeria_granules, session, path=folder)
     
     
     
 def post_processing(folder, params):
-    curr_file = glob("./*.hdf", recursive = True)[0]
+    curr_files = glob(folder + "*.hdf", recursive = True)
+    if len(curr_files) == 0:
+        return
+    curr_file = curr_files[0]
     
     print ('found ', curr_file)
     
@@ -78,11 +80,12 @@ def post_processing(folder, params):
 
     lat = str(params['lt'])
     lon = str(params['lg'])
+    lom = -1 if lon[-1] == 'W' else 1
     
     lat = lat[:-1]
     lon = lon[:-1]
     
-    area = getTgtArea(rgb, float(lon), float(lat), 12.5)
+    area = getTgtArea(rgb, float(lon)*lom, float(lat), 5)
     
     filename = folder + 'modis_satellite_' + str(params['date']) + '.npy'
     
@@ -110,10 +113,11 @@ def download_modis(folder):
         
 
 
+print ('Number of arguments:', len(sys.argv), 'arguments.')
+print ('Argument List:', str(sys.argv))
 
-hurricanes_folders = glob("/home/fun/data/AL012012/", recursive = True)
+hurricanes_folders = glob("/home/fun/data/" + sys.argv[1] + "/", recursive = True)
 
 for it in hurricanes_folders:
     print (it)
     download_modis(it)
-    break
