@@ -8,8 +8,10 @@ from pyhdf.SD import SD, SDC
 import numpy as np
 import sys
 
-username = "lxg0601"  # Update this line
-password = "Xian2021"  # Update this line
+username_file = open("~/profile/imerg_username.txt", "r")
+password_file = open("~/profile/imerg_password.txt", "r")
+username = username_file.readline()
+password = password_file.readline()
 
 def convert_date(datestr):
     return datestr[0:4] + '-' + datestr[4:6] + '-' + datestr[6:8]
