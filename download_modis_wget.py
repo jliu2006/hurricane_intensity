@@ -151,11 +151,11 @@ def neighborRGB(color):
         while idx < len(curr_row):
             
             if found_swath == True:
-                if curr_row[idx][0] != -2.8672 or curr_row[idx][1] != -2.8672 or curr_row[idx][2] != -2.8672:
+                if curr_row[idx][0] != -28672 or curr_row[idx][1] != -28672 or curr_row[idx][2] != -28672:
                     found_swath = False
                 else:
                     len_swath += 1
-            elif curr_row[idx][0] == -2.8672  and curr_row[idx][1] == -2.8672 and curr_row[idx][2] == -2.8672:
+            elif curr_row[idx][0] == -28672  and curr_row[idx][1] == -28672 and curr_row[idx][2] == -28672:
                 found_swath = True
                 len_swath = 1
                 swath_start = idx
@@ -183,12 +183,12 @@ def neighborRGB(color):
                 new_row = color[new_row_idx]
                 for i in range(swath_start-left_length, swath_start):
                     if i >=0 and i < len(new_row):
-                        if new_row[i][0] != -2.8672 or new_row[i][1] != -2.8672 or new_row[i][2] != -2.8672:
+                        if new_row[i][0] != -28672 or new_row[i][1] != -28672 or new_row[i][2] != -28672:
                             existing_vals = np.append(existing_vals, new_row[i])
                             
                 for i in range(swath_end, swath_end+right_length+1):
                     if i >=0 and i < len(new_row):
-                        if new_row[i][0] != -2.8672 or new_row[i][1] != -2.8672 or new_row[i][2] != -2.8672:
+                        if new_row[i][0] != -28672 or new_row[i][1] != -28672 or new_row[i][2] != -28672:
                             existing_vals = np.append(existing_vals, new_row[i])
         
         for idx in range(len_swath):
@@ -211,19 +211,22 @@ def post_processing(folder, params, day):
     for it in hdf.datasets():
         print (it)
     
-    R = hdf.select('Coarse Resolution Surface Reflectance Band 1').get()
-    B = hdf.select('Coarse Resolution Surface Reflectance Band 3').get()
-    G = hdf.select('Coarse Resolution Surface Reflectance Band 4').get()
+    # rgb, infrared, and temperature
+    B1 = hdf.select('Coarse Resolution Surface Reflectance Band 1').get() # red band
+    B2 = hdf.select('Coarse Resolution Surface Reflectance Band 2').get() # infrared 1
+    B3 = hdf.select('Coarse Resolution Surface Reflectance Band 3').get() # blue band
+    B4 = hdf.select('Coarse Resolution Surface Reflectance Band 4').get() # green band
+    B5 = hdf.select('Coarse Resolution Surface Reflectance Band 5').get() # infrared 2
+    B6 = hdf.select('Coarse Resolution Surface Reflectance Band 6').get() # infrared 3
+    B7 = hdf.select('Coarse Resolution Surface Reflectance Band 7').get() # infrared 4
+    B20 = hdf.select('Coarse Resolution Brightness Temperature Band 20').get() # temperature 1
+    B21 = hdf.select('Coarse Resolution Brightness Temperature Band 21').get() # temperature 2
+    B31 = hdf.select('Coarse Resolution Brightness Temperature Band 31').get() # temperature 3
+    B32 = hdf.select('Coarse Resolution Brightness Temperature Band 32').get() # temperature 4
     time = hdf.select('Coarse Resolution Granule Time').get()
-
-    R_true = R * 0.0001
-    G_true = G * 0.0001
-    B_true = B * 0.0001
-
-    rgb = np.dstack([R_true, G_true, B_true])
-
-    print (B.shape)
     
+    rgb_infra_temp = np.dstack([B1, B2, B3, B4, B5, B6, B7, B20, B21, B31, B32])
+  
     paths = params['path']
     
     paths_in_day = []
@@ -258,7 +261,7 @@ def post_processing(folder, params, day):
     new_lon, new_lat = wrappedLinearInterpolation(params, day, selected_time)
     
    
-    area = getTgtArea(rgb, new_lon, new_lat, radius)
+    area = getTgtArea(rgb_infra_temp, new_lon, new_lat, radius)
     neighborRGB(area)
     
     filename = folder + str(radius) + '_modis_satellite_' + str(day) + '.npy'
