@@ -1,20 +1,8 @@
-# hurricane_intensity
-notes:
-1) designed a path interpolation algo to get hurricane eye in the center
+A Wavelet-Based Deep Learning Framework for Predicting Peak Intensity of Hurricanes in the Atlantic Ocean
+By Jiahe Liu, Xiaodi Wang
 
-1) randomized adject pixels filling methods for swath gap filling ref: https://arxiv.org/pdf/2106.07113.pdf
+Published in Scientific Research's Journal on Atmospheric and Climate Sciences
 
-example : '/home/fun/data/AL022019/10_modis_satellite_20190712.npy'
+Abstract: Every year, hurricanes pose a serious threat to coastal communities, and forecasting their maximum intensities has been a crucial task for scientists. Computational methods have been used to forecast the intensities of hurricanes across varying time horizons. However, as climate change has increased the volatility of the intensities of recent hurricanes, newer and adaptable methods must be devised. In this study, a framework is proposed to estimate the maximum intensity of tropical cyclones (TCs) in the Atlantic Ocean using a multi-input convolutional neural network (CNN). From the Atlantic hurricane seasons of 2000 through 2021, over 100 TCs that reached hurricane-level wind speeds are used. Novel algorithms are used to collect and preprocess both satellite image data and non-image data for these TCs. Namely, Discrete Wavelet Transforms (DWTs) are used to decompose individual bands of satellite image data, eliminating noise and extracting hidden frequency details before training. Validation tests indicate that this framework can estimate the maximum wind speed of TCs with a root mean square error of 15 knots. This framework provides preliminary predictions that can supplement current computational methods that would otherwise not be able to account for climate change. Future work can be done by forecasting with time constraints, and to provide estimations for more metrics such as pressure and precipitation.
 
-2)huricane images for ISEF slides 
-
-midsize: 
-+wavelet transform
-
-file = '/home/fun/data/AL162003/10_modis_satellite_20031005.npy'
-
-
-
-
-3) drop  invalid image
-https://e4ftl01.cr.usgs.gov/MOLT/MOD09CMG.006/2005.09.23/BROWSE.MOD09CMG.A2005266.006.2015108022309.1.jpg
+Liu, J. and Wang, X. (2023) A Wavelet-Based Deep Learning Framework for Predicting Peak Intensity of Hurricanes in the Atlantic Ocean. Atmospheric and Climate Sciences, 13, 587-606. doi: 10.4236/acs.2023.134033.
